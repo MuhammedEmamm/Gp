@@ -1,0 +1,64 @@
+.desc {
+  color: black;
+  height: 70px;
+  overflow: hidden;
+}
+
+.title {
+  color: #007cff !important;
+}
+
+.positive {
+  background-color: green;
+  border-radius: 10px;
+  padding: 5px;
+  color: white;
+  width: 100%;
+  text-align: center;
+
+
+}
+
+.negitive {
+  background-color: red;
+  border-radius: 10px;
+  padding: 5px;
+  color: white;
+  width: 100%;
+  text-align: center;
+
+
+}
+
+.neutral {
+  background-color: #007cff;
+  border-radius: 10px;
+  padding: 5px;
+  color: white;
+  width: 100%;
+  text-align: center;
+
+}
+
+.text-green {
+  color: green;
+}
+
+.text-red {
+  color: red;
+}
+
+.text-blue {
+  color: #007cff;
+}
+
+.twitter-tweet {
+  width: 100px !important;
+  min-width: 50px !important;
+}
+.nav-tabs .nav-item.show .nav-link,
+.nav-tabs .nav-link.active {
+  color: #495057;
+  background-color: #fff;
+  border-color: #007cff #007cff #fff;
+}

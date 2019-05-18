@@ -1,0 +1,25 @@
+#logo {
+  width: 15%;
+}
+
+.headitems {
+  color: white;
+}
+
+.header-item {
+  font-size: 15px !important;
+  margin-top: 15px;
+}
+
+.header-item:hover {
+  color: black
+}
+
+
+.header-main {
+  font-size: 30px !important;
+}
+
+.header-main:hover {
+  color: black;
+}
