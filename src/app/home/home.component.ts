@@ -20,29 +20,7 @@ export class HomeComponent {
   spotLight = new THREE.Light(0xffffff);
   controls = new OrbitControls(this.camera, this.renderer.domElement);
   light = new THREE.HemisphereLight(0xffffbb, 0x080820, 1);
-  mercator = d3.geoEquirectangular().translate([1024, 512]).scale(325);
-  translate = this.mercator.translate();
-  width = 600;
-  height = 500;
-  sens = 0.25;
-  focused;
-  projection = d3.geoOrthographic()
-    .scale(245)
-    .rotate([0, 0])
-    .translate([this.width / 2, this.height / 2])
-    .clipAngle(90);
-  path = d3.geoPath().projection(this.projection);
-  svg = d3.select("body").append("svg")
-    .attr("width", this.width)
-    .attr("height", this.height);
-  countryTooltip = d3.select("body").append("div").attr("class", "countryTooltip");
-  countryList = d3.select("body").append("select").attr("name", "countries");
-  q = d3_queue.queue().defer(d3.json, "assets/img/world-110m.json")
-    .defer(d3.tsv, "assets/img/world-110m-country-names.tsv")
-    .await((error) => {
-      if (error) throw error;
-      console.log("Goodbye!");
-    });
+ 
 
   constructor() {
     this.initSphere();
@@ -51,12 +29,6 @@ export class HomeComponent {
     this.renderer.setSize(window.innerWidth, window.innerHeight);
     this.rendererContainer.nativeElement.appendChild(this.renderer.domElement);
     this.animate();
-  }
-  initd3() {
-    this.svg.append("path")
-      .datum({ type: "Sphere" })
-      .attr("class", "water")
-      .attr("d", this.path);
   }
   initSphere() {
     this.camera.position.z = 1000;
