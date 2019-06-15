@@ -21,6 +21,7 @@ export class NewsComponent implements OnInit {
   };
 
   type = 'pie';
+  ModelType: any = '1';
 
   formData: {
     Query: any;
@@ -310,6 +311,7 @@ export class NewsComponent implements OnInit {
         name: 'za',
         id: 'South Africa'
       }]
+
   Sources: {
     category: any,
     id: any,
@@ -346,8 +348,10 @@ export class NewsComponent implements OnInit {
     //submit = true for showing the results section and pie charts on HTML
     this.submit = true;
     this.NewsData = [];
-
-    //Show Pre-loader 
+    this.NewsDataN = [];
+    this.NewsDataNE = [];
+    this.NewsDataP = [];
+    //Show Pre-loader   
     if (document.getElementById('page-loader'))
       document.getElementById('page-loader').style.display = 'block';
 
@@ -358,42 +362,24 @@ export class NewsComponent implements OnInit {
     }
 
     //callback of the fetchNews HTTP Request
-    this.newservice.FetchNews(this.formData.Query, this.lang, this.Type, this.Source, this.Country, this.Category, this.Sortby).subscribe((res: any) => {
+    this.newservice.FetchNews(this.formData.Query, this.lang, this.Type, this.Source, this.Country, this.Category, this.Sortby, this.ModelType).subscribe((res: any) => {
       let e = this.el.nativeElement.querySelector('#search-results');
+      console.log(res);
       e.scrollIntoView({ behavior: "smooth", block: "start" });
       if (document.getElementById('page-loader'))
         document.getElementById('page-loader').style.display = 'none';
       this.lang = 'en';
       if (res.status == 'ok') {
         this.NewsData = res.articles;
-        this.NewsData.forEach(data => {
-          if (data.Sentiment > 0 && data.Sentiment <= 0.5) {
-            data.SentimentWord = 'Good';
-          }
-          else if (data.Sentiment > 0.5 && data.Sentiment <= 1) {
-            data.SentimentWord = 'Very Good';
-          }
-          else if (data.Sentiment < 0 && data.Sentiment >= -0.5) {
-            data.SentimentWord = 'Poor';
-          }
-          else if (data.Sentiment < -0.5 && data.Sentiment >= -1) {
-            data.SentimentWord = 'Very Poor';
-          }
-          else {
-            data.SentimentWord = 'Neutral'
-          }
-
-        });
-
-        this.totalResultsP = this.NewsData.filter(it => it['Sentiment'] > 0 && it['Sentiment'] != 500).length;
-        this.NewsDataP = this.NewsData.filter(it => it['Sentiment'] > 0 && it['Sentiment'] != 500);
-        this.totalResultsN = this.NewsData.filter(it => it['Sentiment'] < 0).length;
-        this.NewsDataN = this.NewsData.filter(it => it['Sentiment'] < 0);
-        this.totalResultsNE = this.NewsData.filter(it => it['Sentiment'] == 0).length;
-        this.NewsDataNE = this.NewsData.filter(it => it['Sentiment'] == 0);
+        this.totalResultsP = this.NewsData.filter(it => it['SentimentWord'] == 'Very Good' || it['SentimentWord'] == 'Good' && it['Sentiment'] != 500).length;
+        this.NewsDataP = this.NewsData.filter(it => it['SentimentWord'] == 'Very Good' || it['SentimentWord'] == 'Good' && it['Sentiment'] != 500);
+        this.totalResultsN = this.NewsData.filter(it => it['SentimentWord'] == 'Very Poor' || it['SentimentWord'] == 'Poor').length;
+        this.NewsDataN = this.NewsData.filter(it => it['SentimentWord'] == 'Very Poor' || it['SentimentWord'] == 'Poor');
+        this.totalResultsNE = this.NewsData.filter(it => it['SentimentWord'] == 'Neutral').length;
+        this.NewsDataNE = this.NewsData.filter(it => it['SentimentWord'] == 'Neutral');
         this.totalResults = this.totalResultsP + this.totalResultsN + this.totalResultsNE;
         this.NewsData = this.NewsData.filter(it => it['Sentiment'] != 500);
-        this.Data = { labels: ['Neutral', 'Postive', 'Negative'], datasets: [{ data: [this.totalResultsNE, this.totalResultsP, this.totalResultsN], backgroundColor: ['rgba(0,124,255,1)', 'rgba(0,128,0,1)', 'rgba(255 , 0 , 0 ,1)'] }] };
+        this.Data = { labels: ['Neutral', 'Postive', 'Negative'], datasets: [{ data: [(this.totalResultsNE / this.totalResults * 100), (this.totalResultsP / this.totalResults * 100), (this.totalResultsN / this.totalResults * 100)], backgroundColor: ['rgba(0,124,255,1)', 'rgba(0,128,0,1)', 'rgba(255 , 0 , 0 ,1)'] }] };
       }
 
     });

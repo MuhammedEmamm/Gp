@@ -73,13 +73,33 @@
                     [ngModelOptions]="{standalone: true}">
                   <label for="Ret" class="form-check-label">Filter Retweets </label>&nbsp;&nbsp;
                 </div>
-                
+
                 <div class="form-check">
                   <input class="form-check-input" id="Rep" type="checkbox" [(ngModel)]="FilterReplies"
                     [ngModelOptions]="{standalone: true}">
-                    <label for="Rep" class="form-check-label">Filter Replies</label>
+                  <label for="Rep" class="form-check-label">Filter Replies</label>
 
                 </div>
+
+                <hr>
+                <div class="form-group">
+                  <label>Model Type</label>
+                  <div class="form-check">
+                    <input class="form-check-input" type="radio" name="Modeltype" id="IBM" value="1"
+                      [(ngModel)]="ModelType" [ngModelOptions]="{standalone: true}">
+                    <label class="form-check-label" for="IBM">
+                      IBM Model
+                    </label>
+                  </div>
+                  <div class="form-check">
+                    <input class="form-check-input" type="radio" name="Modeltype" id="SA" value="0"
+                      [(ngModel)]="ModelType" [ngModelOptions]="{standalone: true}">
+                    <label class="form-check-label" for="SA">
+                      SA Model
+                    </label>
+                  </div>
+                </div>
+
 
               </form>
             </div>
@@ -103,29 +123,21 @@
 
             <h1 class="text-second-color font-weight-300 text-lg-center text-sm-center margin-tb-15px">Search Results
             </h1>
-            <h6 class="text-center">Sentiment values range from -1 to 1 </h6>
+            <!-- <h6 class="text-center">Sentiment values range from -1 to 1 </h6> -->
 
             <chart [type]="type" [data]="Data" [options]="options"></chart>
             <br>
 
-            <h6 class="text-grey-2 text-center"><span>Total Results : </span> {{Sentiment.totalResults}}</h6>
+            <h4 class="text-grey-2 text-center"><span>Total Tweets : </span> {{Sentiment.totalResults}}</h4>
 
             <div class="row">
-              <div class="col-3"></div>
-              <div class="col-3">
-                <h6 class="text-green text-right"><span>IBM Positive Results : </span> {{Sentiment.totalResultsP}}
-                </h6>
-                <h6 class="text-red text-right"><span>IBM Negative Results : </span> {{Sentiment.totalResultsN}}</h6>
-                <h6 class="text-blue text-right"><span>IBM Neutral Results : </span> {{Sentiment.totalResultsNE}}</h6>
+              <div class="col-4"></div>
+              <div class="col-4">
+                <h4 class="text-green text-center"><span>Positive Tweets : </span> {{Sentiment.totalResultsP}}  ({{Sentiment.totalResultsP / Sentiment.totalResults * 100 | number}}%)</h4>
+                <h4 class="text-red text-center"><span>Negative Tweets : </span> {{Sentiment.totalResultsN}}  ({{Sentiment.totalResultsN / Sentiment.totalResults * 100 | number}}%)</h4>
+                <h4 class="text-blue text-center"><span>Neutral Tweets : </span> {{Sentiment.totalResultsNE}}  ({{Sentiment.totalResultsNE / Sentiment.totalResults * 100 | number}}%)</h4>
               </div>
-              <div class="col-3">
-                <h6 class="text-green text-left"><span>Model positive Results : </span> {{Sentiment.totalResultsP2}}
-                </h6>
-                <h6 class="text-red text-left"><span>Model negative Results : </span> {{Sentiment.totalResultsN2}}
-                </h6>
-                <h6 class="text-blue text-left"><span>Model neutral Results : </span> {{Sentiment.totalResultsNE2}}
-                </h6>
-              </div>
+              <div class="col-4"></div>
 
 
             </div>
@@ -161,9 +173,9 @@
 
         <div class="row">
 
-          <!-- Doctor -->
-          <div class="col-lg-6 col-md-6 hvr-bob sm-mb-80px" *ngFor="let tweet of TweetURl" style="margin-bottom:50px">
-            <div class="background-white box-shadow wow fadeInUp" data-wow-delay="0.2s">
+          <!-- Tweet Card -->
+          <div class="col-lg-6 col-md-6 hvr-bob sm-mb-80px" *ngFor="let tweet of TweetURl" style="margin-bottom:35px ;height: 500px ;  max-height: 500px; overflow: auto">
+            <div class="background-white box-shadow wow fadeInUp" data-wow-delay="0.2s" style="min-height: 100%">
 
               <div class="row">
                 <div class="col-7">
@@ -176,18 +188,9 @@
                 <div class="col-5">
                   <div class="padding-30px">
                     <h6 class="margin-tb-15px"><a class="title">Sentiment Statstics</a></h6>
-                    <h6>IBM </h6>
                     <div
-                      [ngClass]="{'positive' : tweet.Sentiment > 0 , 'negitive' : tweet.Sentiment < 0 , 'neutral' : tweet.Sentiment === 0  }">
+                      [ngClass]="{'positive' : tweet.SentimentWord == 'Very Good' || tweet.SentimentWord == 'Good' , 'negitive' : tweet.SentimentWord == 'Very Poor' || tweet.SentimentWord == 'Poor' , 'neutral' : tweet.SentimentWord == 'Neutral'  }">
                       <span title="{{tweet.Sentiment}}">{{tweet.SentimentWord}}
-                      </span>
-
-                    </div>
-                    <hr>
-                    <h6>Model</h6>
-                    <div
-                      [ngClass]="{'positive' : tweet.Sentiment2 > 0 , 'negitive' : tweet.Sentiment2 < 0 , 'neutral' : tweet.Sentiment2 === 0  }">
-                      <span title="{{tweet.Sentiment2}}">{{tweet.SentimentWord2}}
                       </span>
 
                     </div>
@@ -198,7 +201,7 @@
 
             </div>
           </div>
-          <!-- // Doctor -->
+          <!-- // Tweet Card End -->
         </div>
 
 
@@ -207,9 +210,9 @@
 
         <div class="row">
 
-          <!-- Doctor -->
-          <div class="col-lg-6 col-md-6 hvr-bob sm-mb-80px" *ngFor="let tweet of TweetURlP" style="margin-bottom:50px">
-            <div class="background-white box-shadow wow fadeInUp" data-wow-delay="0.2s">
+          <!-- Tweet Card -->
+          <div class="col-lg-6 col-md-6 hvr-bob sm-mb-80px" *ngFor="let tweet of TweetURlP" style="margin-bottom:35px ;height: 500px ;  max-height: 500px; overflow: auto">
+            <div class="background-white box-shadow wow fadeInUp" data-wow-delay="0.2s" style="min-height: 100%">
 
               <div class="row">
                 <div class="col-7">
@@ -222,21 +225,13 @@
                 <div class="col-5">
                   <div class="padding-30px">
                     <h6 class="margin-tb-15px"><a class="title">Sentiment Statstics</a></h6>
-                    <h6>IBM </h6>
                     <div
-                      [ngClass]="{'positive' : tweet.Sentiment > 0 , 'negitive' : tweet.Sentiment < 0 , 'neutral' : tweet.Sentiment === 0  }">
+                    [ngClass]="{'positive' : tweet.SentimentWord == 'Very Good' || tweet.SentimentWord == 'Good' , 'negitive' : tweet.SentimentWord == 'Very Poor' || tweet.SentimentWord == 'Poor' , 'neutral' : tweet.SentimentWord == 'Neutral'  }">
                       <span title="{{tweet.Sentiment}}">{{tweet.SentimentWord}}
                       </span>
 
                     </div>
-                    <hr>
-                    <h6>Model</h6>
-                    <div
-                      [ngClass]="{'positive' : tweet.Sentiment2 > 0 , 'negitive' : tweet.Sentiment2 < 0 , 'neutral' : tweet.Sentiment2 === 0  }">
-                      <span title="{{tweet.Sentiment2}}">{{tweet.SentimentWord2 }}
-                      </span>
 
-                    </div>
                   </div>
                 </div>
 
@@ -244,7 +239,7 @@
 
             </div>
           </div>
-          <!-- // Doctor -->
+          <!-- // Tweet Card End -->
         </div>
 
       </div>
@@ -253,8 +248,8 @@
         <div class="row">
 
           <!-- Doctor -->
-          <div class="col-lg-6 col-md-6 hvr-bob sm-mb-80px" *ngFor="let tweet of TweetURlN" style="margin-bottom:50px">
-            <div class="background-white box-shadow wow fadeInUp" data-wow-delay="0.2s">
+          <div class="col-lg-6 col-md-6 hvr-bob sm-mb-80px" *ngFor="let tweet of TweetURlN"style="margin-bottom:35px ;height: 500px ;  max-height: 500px; overflow: auto">
+            <div class="background-white box-shadow wow fadeInUp" data-wow-delay="0.2s" style="min-height: 100%">
 
               <div class="row">
                 <div class="col-7">
@@ -267,21 +262,13 @@
                 <div class="col-5">
                   <div class="padding-30px">
                     <h6 class="margin-tb-15px"><a class="title">Sentiment Statstics</a></h6>
-                    <h6>IBM </h6>
                     <div
-                      [ngClass]="{'positive' : tweet.Sentiment > 0 , 'negitive' : tweet.Sentiment < 0 , 'neutral' : tweet.Sentiment === 0  }">
+                    [ngClass]="{'positive' : tweet.SentimentWord == 'Very Good' || tweet.SentimentWord == 'Good' , 'negitive' : tweet.SentimentWord == 'Very Poor' || tweet.SentimentWord == 'Poor' , 'neutral' : tweet.SentimentWord == 'Neutral'  }">
                       <span title="{{tweet.Sentiment}}">{{tweet.SentimentWord}}
                       </span>
 
                     </div>
-                    <hr>
-                    <h6>Model</h6>
-                    <div
-                      [ngClass]="{'positive' : tweet.Sentiment2 > 0 , 'negitive' : tweet.Sentiment2 < 0 , 'neutral' : tweet.Sentiment2 === 0  }">
-                      <span title="{{tweet.Sentiment2}}">{{tweet.SentimentWord2}}
-                      </span>
 
-                    </div>
                   </div>
                 </div>
 
@@ -298,8 +285,8 @@
         <div class="row">
 
           <!-- Doctor -->
-          <div class="col-lg-6 col-md-6 hvr-bob sm-mb-80px" *ngFor="let tweet of TweetURlNE" style="margin-bottom:50px">
-            <div class="background-white box-shadow wow fadeInUp" data-wow-delay="0.2s">
+          <div class="col-lg-6 col-md-6 hvr-bob sm-mb-80px" *ngFor="let tweet of TweetURlNE" style="margin-bottom:35px ;height: 500px ;  max-height: 500px; overflow: auto">
+            <div class="background-white box-shadow wow fadeInUp" data-wow-delay="0.2s" style="min-height: 100%">
 
               <div class="row">
                 <div class="col-7">
@@ -312,18 +299,9 @@
                 <div class="col-5">
                   <div class="padding-30px">
                     <h6 class="margin-tb-15px"><a class="title">Sentiment Statstics</a></h6>
-                    <h6>IBM </h6>
                     <div
-                      [ngClass]="{'positive' : tweet.Sentiment > 0 , 'negitive' : tweet.Sentiment < 0 , 'neutral' : tweet.Sentiment === 0  }">
+                    [ngClass]="{'positive' : tweet.SentimentWord == 'Very Good' || tweet.SentimentWord == 'Good' , 'negitive' : tweet.SentimentWord == 'Very Poor' || tweet.SentimentWord == 'Poor' , 'neutral' : tweet.SentimentWord == 'Neutral'  }">
                       <span title="{{tweet.Sentiment}}">{{tweet.SentimentWord}}
-                      </span>
-
-                    </div>
-                    <hr>
-                    <h6>Model</h6>
-                    <div
-                      [ngClass]="{'positive' : tweet.Sentiment2 > 0 , 'negitive' : tweet.Sentiment2 < 0 , 'neutral' : tweet.Sentiment2 === 0  }">
-                      <span title="{{tweet.Sentiment2}}">{{tweet.SentimentWord2}}
                       </span>
 
                     </div>

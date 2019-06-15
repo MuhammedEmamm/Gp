@@ -8,8 +8,8 @@ import { endpoint } from '../../config/config';
 export class NewsService {
 
   constructor(private http: HttpClient) { }
-  FetchNews(Query: any, lang: any, type: any, source: any, country: any, category: any, sortby: any) {
-    return this.http.get(endpoint('FetchNews') + Query + '&lang=' + lang + '&type=' + type + '&country=' + country + '&source=' + source + '&category=' + category + '&sort=' + sortby);
+  FetchNews(Query: any, lang: any, type: any, source: any, country: any, category: any, sortby: any , ModelType : any) {
+    return this.http.get(endpoint('FetchNews') + Query + '&lang=' + lang + '&type=' + type + '&country=' + country + '&source=' + source + '&category=' + category + '&sort=' + sortby + '&modeltype=' + ModelType);
   }
   FetchSources() {
     return this.http.get('https://newsapi.org/v2/sources?apiKey=a96b258ae04044d79886855bb03003a1');

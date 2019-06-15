@@ -25,6 +25,7 @@ export class HeaderComponent implements OnInit {
       document.getElementById('head-one').classList.add('headitems');
       document.getElementById('head-two').classList.add('headitems');
       document.getElementById('head-three').classList.add('headitems');
+      document.getElementById('head-four').classList.add('headitems');
 
     }
     else {
@@ -34,6 +35,8 @@ export class HeaderComponent implements OnInit {
       document.getElementById('head-one').classList.remove('headitems');
       document.getElementById('head-two').classList.remove('headitems');
       document.getElementById('head-three').classList.remove('headitems');
+      document.getElementById('head-four').classList.remove('headitems');
+      
     }
     if (window.pageYOffset > 500) {
       document.getElementById('scroll-up').style.display = 'block';

@@ -99,6 +99,7 @@
                     <option *ngFor="let count of Countries" value="{{count.name}}">{{count.id}}</option>
                   </select>
                 </div>
+
                 <div class="form-group" *ngIf="Type !== 'everything'">
                   <label for="Categories">Categories</label>
                   <select class="form-control" id="Categories" [(ngModel)]="Category"
@@ -107,6 +108,24 @@
                     <option value="">All</option>
                     <option *ngFor="let cat of categories" value="{{cat.name}}">{{cat.name}}</option>
                   </select>
+                </div>
+                <hr>
+                <div class="form-group">
+                  <label>Model Type</label>
+                  <div class="form-check">
+                    <input class="form-check-input" type="radio" name="Modeltype" id="IBM" value="1" [(ngModel)]="ModelType"
+                    [ngModelOptions]="{standalone: true}">
+                    <label class="form-check-label" for="IBM">
+                      IBM Model
+                    </label>
+                  </div>
+                  <div class="form-check">
+                    <input class="form-check-input" type="radio" name="Modeltype" id="SA" value="0" [(ngModel)]="ModelType"
+                    [ngModelOptions]="{standalone: true}">
+                    <label class="form-check-label" for="SA" >
+                      SA Model
+                    </label>
+                  </div>
                 </div>
 
               </form>
@@ -130,14 +149,14 @@
 
             <h1 class="text-second-color font-weight-300 text-lg-center text-sm-center margin-tb-15px">Search Results
             </h1>
-            <h6 class="text-center">Sentiment values range from -1 to 1 </h6>
+            <!-- <h6 class="text-center">Sentiment values range from -1 to 1 </h6> -->
             <chart [type]="'pie'" [data]="Data" [options]="options"></chart>
             <br>
 
-            <h6 class="text-grey-2 text-center"><span>Total Results : </span> {{totalResults}}</h6>
-            <h6 class="text-green text-center"><span>Positive Results : </span> {{totalResultsP}}</h6>
-            <h6 class="text-red text-center"><span>Negative Results : </span> {{totalResultsN}}</h6>
-            <h6 class="text-blue text-center"><span>Neutral Results : </span> {{totalResultsNE}}</h6>
+            <h4 class="text-grey-2 text-center"><span>Total Articles : </span> {{totalResults}}</h4>
+            <h4 class="text-green text-center"><span>Positive Articles : </span> {{totalResultsP}}  ({{totalResultsP / totalResults * 100 | number}}%)</h4>
+            <h4 class="text-red text-center"><span>Negative Articles : </span> {{totalResultsN}} ({{totalResultsN / totalResults * 100 | number}}%)</h4>
+            <h4 class="text-blue text-center"><span>Neutral Articles : </span> {{totalResultsNE}} ({{totalResultsNE / totalResults * 100 | number}}%)</h4>
           </div>
 
         </div>
@@ -174,7 +193,7 @@
             <div class="background-white box-shadow wow fadeInUp" data-wow-delay="0.2s">
               <div class="thum">
                 <a href="{{news.url}}" target="_blank"><img id="NewsImage{{i}}" src="{{news.urlToImage}}"
-                    (error)="updateUrl($event , i)" alt="" style="width:100% ; height: 300px; "></a>
+                    (error)="updateUrl($event , i)" alt="" style="width:100% ;height: 400px; max-height: 400px;"></a>
               </div>
               <div class="row">
                 <div class="col-7">
@@ -197,7 +216,7 @@
                     <h6 class="margin-tb-15px"><a class="title">Sentiment Statstics</a></h6>
 
                     <div
-                      [ngClass]="{'positive' : news.Sentiment > 0 , 'negitive' : news.Sentiment < 0 , 'neutral' : news.Sentiment === 0  }">
+                      [ngClass]="{'positive' : news.SentimentWord =='Very Good' || news.SentimentWord == 'Good' , 'negitive' : news.SentimentWord == 'Very Poor' || news.SentimentWord =='Poor' , 'neutral' : news.SentimentWord == 'Neutral'  }">
                       <span title="{{news.Sentiment}}">{{news.SentimentWord}}
                       </span>
 
@@ -222,7 +241,7 @@
             <div class="background-white box-shadow wow fadeInUp" data-wow-delay="0.2s">
               <div class="thum">
                 <a href="{{news.url}}" target="_blank"><img id="NewsImage{{i}}" src="{{news.urlToImage}}"
-                    (error)="updateUrl($event , i)" alt="" style="width:100% ; height: 300px; "></a>
+                    (error)="updateUrl($event , i)" alt="" style="width:100%; height: 400px; max-height: 400px; "></a>
               </div>
               <div class="row">
                 <div class="col-7">
@@ -245,7 +264,7 @@
                     <h6 class="margin-tb-15px"><a class="title">Sentiment Statstics</a></h6>
 
                     <div
-                      [ngClass]="{'positive' : news.Sentiment > 0 , 'negitive' : news.Sentiment < 0 , 'neutral' : news.Sentiment === 0  }">
+                    [ngClass]="{'positive' : news.SentimentWord =='Very Good' || news.SentimentWord == 'Good' , 'negitive' : news.SentimentWord == 'Very Poor' || news.SentimentWord =='Poor' , 'neutral' : news.SentimentWord == 'Neutral'  }">
                       <span title="{{news.Sentiment}}">{{news.SentimentWord}}
                       </span>
 
@@ -270,7 +289,7 @@
             <div class="background-white box-shadow wow fadeInUp" data-wow-delay="0.2s">
               <div class="thum">
                 <a href="{{news.url}}" target="_blank"><img id="NewsImage{{i}}" src="{{news.urlToImage}}"
-                    (error)="updateUrl($event , i)" alt="" style="width:100% ; height: 300px; "></a>
+                    (error)="updateUrl($event , i)" alt="" style="width:100% ; height: 400px; max-height: 400px;"></a>
               </div>
               <div class="row">
                 <div class="col-7">
@@ -293,7 +312,7 @@
                     <h6 class="margin-tb-15px"><a class="title">Sentiment Statstics</a></h6>
 
                     <div
-                      [ngClass]="{'positive' : news.Sentiment > 0 , 'negitive' : news.Sentiment < 0 , 'neutral' : news.Sentiment === 0  }">
+                    [ngClass]="{'positive' : news.SentimentWord =='Very Good' || news.SentimentWord == 'Good' , 'negitive' : news.SentimentWord == 'Very Poor' || news.SentimentWord =='Poor' , 'neutral' : news.SentimentWord == 'Neutral'  }">
                       <span title="{{news.Sentiment}}">{{news.SentimentWord}}
                       </span>
 
@@ -340,7 +359,7 @@
                     <h6 class="margin-tb-15px"><a class="title">Sentiment Statstics</a></h6>
 
                     <div
-                      [ngClass]="{'positive' : news.Sentiment > 0 , 'negitive' : news.Sentiment < 0 , 'neutral' : news.Sentiment === 0  }">
+                    [ngClass]="{'positive' : news.SentimentWord =='Very Good' || news.SentimentWord == 'Good' , 'negitive' : news.SentimentWord == 'Very Poor' || news.SentimentWord =='Poor' , 'neutral' : news.SentimentWord == 'Neutral'  }">
                       <span title="{{news.Sentiment}}">{{news.SentimentWord}}
                       </span>
 

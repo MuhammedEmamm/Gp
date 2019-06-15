@@ -8,7 +8,7 @@ import { endpoint } from '../../config/config';
 export class TwitterService {
 
   constructor(private http: HttpClient) { }
-  FetchTweets(Query: any, Counter: any , Lang : any ,FilterRe : any , FilterRep : any ) {
-    return this.http.get(endpoint('FetchTweets') + `?query=${Query + FilterRe + FilterRep}&count=${Counter}&lang=${Lang}`);
+  FetchTweets(Query: any, Counter: any , Lang : any ,FilterRe : any , FilterRep : any  , ModelType : any) {
+    return this.http.get(endpoint('FetchTweets') + `?query=${Query + FilterRe + FilterRep}&count=${Counter}&lang=${Lang}&modeltype=${ModelType}`);
   }
 }

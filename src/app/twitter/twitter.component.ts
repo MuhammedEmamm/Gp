@@ -16,6 +16,7 @@ export class TwitterComponent implements OnInit {
 
   FilterReTweets: any = '';
   FilterReplies: any = '';
+  ModelType: any = '1';
   Data: {
     labels: any[],
     datasets: { data: any[], backgroundColor: any[] }[]
@@ -33,12 +34,10 @@ export class TwitterComponent implements OnInit {
     Query: any,
     Counter: number
   } = { Query: '', Counter: 5 };
+
   TweetURl: {
     Sentiment: any,
     SentimentWord: any,
-    Sentiment2: any,
-    SentimentWord2: any,
-
     id: any
   }[] =
     [];
@@ -46,27 +45,18 @@ export class TwitterComponent implements OnInit {
   TweetURlP: {
     Sentiment: any,
     SentimentWord: any,
-    Sentiment2: any,
-    SentimentWord2: any,
-
     id: any
   }[] =
     [];
   TweetURlN: {
     Sentiment: any,
     SentimentWord: any,
-    Sentiment2: any,
-    SentimentWord2: any,
-
     id: any
   }[] =
     [];
   TweetURlNE: {
     Sentiment: any,
     SentimentWord: any,
-    Sentiment2: any,
-    SentimentWord2: any,
-
     id: any
   }[] =
     [];
@@ -77,28 +67,20 @@ export class TwitterComponent implements OnInit {
     totalResults: number,
     totalResultsP: number,
     totalResultsN: number,
-    totalResultsNE: number,
-    totalResultsP2: number,
-    totalResultsN2: number,
-    totalResultsNE2: number,
+    totalResultsNE: number
   } = {
       totalResults: 0,
       totalResultsP: 0,
       totalResultsN: 0,
-      totalResultsNE: 0,
-      totalResultsP2: 0,
-      totalResultsN2: 0,
-      totalResultsNE2: 0
-
+      totalResultsNE: 0
     };
 
-    //Start on Submit Function
+  //Start on Submit Function
   OnSubmit() {
+    console.log(this.ModelType) ; 
     //submit = true for showing the results section and pie charts on HTML
     this.submit = true;
-
     this.TweetURl = [];
-
     //Show Pre-loader 
     if (document.getElementById('page-loader'))
       document.getElementById('page-loader').style.display = 'block';
@@ -121,8 +103,9 @@ export class TwitterComponent implements OnInit {
       this.FilterReplies = '';
     }
 
-    //initialize the pie chart 
+    //initialize the pie chart data
     this.Data = { labels: ['Neutral', 'Postive', 'Negative'], datasets: [{ data: Array(3).fill(0), backgroundColor: ['rgba(0,124,255,1)', 'rgba(0,128,0,1)', 'rgba(255 , 0 , 0 ,1)'] }] };
+
     //check for the pattern of the query to detect the language
     if (this.regex.test(this.formData.Query)) {
       console.log('arabic');
@@ -130,56 +113,19 @@ export class TwitterComponent implements OnInit {
     }
 
     //callback of the fetchtweets HTTP Request
-    this.tweetservice.FetchTweets(this.formData.Query, this.formData.Counter, this.lang, this.FilterReTweets, this.FilterReplies).subscribe((res: any) => {
-      console.log(res);
+    this.tweetservice.FetchTweets(this.formData.Query, this.formData.Counter, this.lang, this.FilterReTweets, this.FilterReplies, this.ModelType).subscribe((res: any) => {
       if (res) {
+        
         this.TweetURl = res;
-        this.TweetURl.forEach(data => {
-          if (data.Sentiment > 0 && data.Sentiment <= 0.5) {
-            data.SentimentWord = 'Good';
-          }
-          else if (data.Sentiment > 0.5 && data.Sentiment <= 1) {
-            data.SentimentWord = 'Very Good';
-          }
-          else if (data.Sentiment < 0 && data.Sentiment >= -0.5) {
-            data.SentimentWord = 'Poor';
-          }
-          else if (data.Sentiment < -0.5 && data.Sentiment >= -1) {
-            data.SentimentWord = 'Very Poor';
-          }
-          else {
-            data.SentimentWord = 'Neutral'
-          }
-          if (data.Sentiment2 > 0 && data.Sentiment2 <= 0.5) {
-            data.SentimentWord2 = 'Good';
-          }
-          else if (data.Sentiment2 > 0.5 && data.Sentiment2 <= 1) {
-            data.SentimentWord2 = 'Very Good';
-          }
-          else if (data.Sentiment2 < 0 && data.Sentiment2 >= -0.5) {
-            data.SentimentWord2 = 'Poor';
-          }
-          else if (data.Sentiment2 < -0.5 && data.Sentiment2 >= -1) {
-            data.SentimentWord2 = 'Very Poor';
-          }
-          else {
-            data.SentimentWord2 = 'Neutral'
-          }
-
-
-        });
         this.Sentiment.totalResults = this.TweetURl.length;
-        this.Sentiment.totalResultsP = this.TweetURl.filter(it => it['Sentiment'] > 0 && it['Sentiment'] != 500).length;
-        this.TweetURlP = this.TweetURl.filter(it => it['Sentiment'] > 0 && it['Sentiment'] != 500);
-        this.Sentiment.totalResultsN = this.TweetURl.filter(it => it['Sentiment'] < 0).length;
-        this.TweetURlN = this.TweetURl.filter(it => it['Sentiment'] < 0);
-        this.Sentiment.totalResultsNE = this.TweetURl.filter(it => it['Sentiment'] == 0).length;
-        this.TweetURlNE = this.TweetURl.filter(it => it['Sentiment'] == 0);
-        this.Sentiment.totalResultsP2 = this.TweetURl.filter(it => it['Sentiment2'] > 0).length;
-        this.Sentiment.totalResultsN2 = this.TweetURl.filter(it => it['Sentiment2'] < 0).length;
-        this.Sentiment.totalResultsNE2 = this.TweetURl.filter(it => it['Sentiment2'] == 0).length;
+        this.Sentiment.totalResultsP = this.TweetURl.filter(it => (it['SentimentWord'] == 'Very Good' || it['SentimentWord'] == 'Good') && it['Sentiment'] != 500).length;
+        this.TweetURlP = this.TweetURl.filter(it => (it['SentimentWord'] == 'Very Good' || it['SentimentWord'] == 'Good') && it['Sentiment'] != 500);
+        this.Sentiment.totalResultsN = this.TweetURl.filter(it => (it['SentimentWord'] == 'Very Poor' || it['SentimentWord'] == 'Poor')).length;
+        this.TweetURlN = this.TweetURl.filter(it => (it['SentimentWord'] == 'Very Poor' || it['SentimentWord'] == 'Poor'));
+        this.Sentiment.totalResultsNE = this.TweetURl.filter(it => (it['SentimentWord'] == 'Neutral')).length;
+        this.TweetURlNE = this.TweetURl.filter(it =>  (it['SentimentWord'] == 'Neutral'));
         this.TweetURl = this.TweetURl.filter(it => it['Sentiment'] != 500);
-        this.Data = { labels: ['Neutral', 'Postive', 'Negative'], datasets: [{ data: [this.Sentiment.totalResultsNE, this.Sentiment.totalResultsP, this.Sentiment.totalResultsN], backgroundColor: ['rgba(0,124,255,1)', 'rgba(0,128,0,1)', 'rgba(255 , 0 , 0 ,1)'] }] };
+        this.Data = { labels: ['Neutral', 'Postive', 'Negative'], datasets: [{ data: [(this.Sentiment.totalResultsNE / this.Sentiment.totalResults * 100), (this.Sentiment.totalResultsP / this.Sentiment.totalResults * 100), (this.Sentiment.totalResultsN / this.Sentiment.totalResults * 100)], backgroundColor: ['rgba(0,124,255,1)', 'rgba(0,128,0,1)', 'rgba(255 , 0 , 0 ,1)'] }] };
 
       }
       let e = this.el.nativeElement.querySelector('#search-results');
@@ -187,6 +133,7 @@ export class TwitterComponent implements OnInit {
 
       if (document.getElementById('page-loader'))
         document.getElementById('page-loader').style.display = 'none';
+
       this.lang = 'en';
     });
 

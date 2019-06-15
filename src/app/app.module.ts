@@ -6,6 +6,9 @@ import { FormsModule, EmailValidator, ReactiveFormsModule } from '@angular/forms
 import { HttpClientModule } from '@angular/common/http';
 import { NgxTweetModule } from "ngx-tweet";
 import { ChartModule } from 'angular2-chartjs';
+import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
+import {AgWordCloudModule} from 'angular4-word-cloud';
+
 
 import { AppComponent } from './app.component';
 import { TwitterComponent } from './twitter/twitter.component';
@@ -13,6 +16,10 @@ import { NewsComponent } from './news/news.component';
 import { HomeComponent } from './home/home.component';
 import { HeaderComponent } from './page-components/header/header.component';
 import { FooterComponent } from './page-components/footer/footer.component';
+import { WordCloudComponent } from './word-cloud/word-cloud.component';
+import { WordCloudService } from './word-cloud/word-cloud.service';
+import { TwitterService } from './twitter/twitter.service';
+import { NewsService } from './news/news.service';
 
 @NgModule({
   declarations: [
@@ -21,7 +28,8 @@ import { FooterComponent } from './page-components/footer/footer.component';
     NewsComponent,
     HomeComponent,
     HeaderComponent,
-    FooterComponent
+    FooterComponent,
+    WordCloudComponent
   ],
   imports: [
     BrowserModule,
@@ -31,9 +39,11 @@ import { FooterComponent } from './page-components/footer/footer.component';
     BrowserAnimationsModule,
     ReactiveFormsModule,
     AppRoutingModule,
-    ChartModule
+    ChartModule,
+    NgbModule,
+    AgWordCloudModule.forRoot()
   ],
-  providers: [],
+  providers: [WordCloudService, TwitterService , NewsService],
   bootstrap: [AppComponent]
 })
 export class AppModule { }

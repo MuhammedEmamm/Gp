@@ -1,0 +1,81 @@
+<!-- Page Loader -->
+<div class="page-loader-wrapper" id="page-loader" style="display:none ">
+  <div class="loader">
+    <div class="m-t-30"><img class="zmdi-hc-spin" src="assets/img/Triangles-1s-200px.svg" width="200" height="200"
+        alt="Oreo">
+    </div>
+    <p>Please wait...</p>
+  </div>
+</div>
+<!-- Page Loader End -->
+
+<section clasee="banner padding-tb-200px sm-ptb-80px background-overlay"
+  style="background-image: url('http://placehold.it/1320x830'); height: 150px;">
+  <div id="page-title" class="padding-tb-30px gradient-white" style="padding-top:120px">
+    <div class="container">
+      <ol class="breadcrumb opacity-5">
+        <li><a href="">Home <i class="fas fa-chevron-right"></i></a></li>
+        <li><a href="">Word Cloud <i class="fas fa-chevron-right"></i></a></li>
+        <li class="active">Search</li>
+      </ol>
+    </div>
+  </div>
+
+</section>
+<section class="padding-tb-150px">
+  <div class="container">
+    <!-- Title -->
+    <div class="row justify-content-center margin-bottom-45px">
+      <div class="col-lg-10">
+        <div class="row">
+          <div class="col-md-3 wow fadeInUp">
+            <h2 class="text-second-color font-weight-300 text-sm-center text-lg-right margin-tb-15px">Word Cloud World
+            </h2>
+          </div>
+          <div class="col-md-7 wow fadeInUp" data-wow-delay="0.2s">
+            <h5 class="text-grey-2">Want to know the most trending topics on each country? just click on the emblem.
+            </h5>
+          </div>
+        </div>
+      </div>
+    </div>
+    <!-- // Title -->
+
+    <div class="row ">
+      <div class="col-lg-3 flag-img" *ngFor="let count of Countries">
+        <div class="hvr-float full-width">
+          <a (click)="initWordCloud(count.id , count.name , count.lang)">
+            <img src="assets/img/{{count.name}}.png" alt="" style="width:100% ; height: 150px">
+          </a>
+          <br>
+          <a (click)="initWordCloud(count.id , count.name)">
+            <h5 class="text-center">{{count.id}}</h5>
+          </a>
+
+          <div class="clearfix"></div>
+        </div>
+      </div>
+    </div>
+
+  </div>
+
+</section>
+<ng-template #WordCloud let-close="close">
+  <div class="modal-content">
+    <div class="modal-header">
+      <h3 class="title text-center" id="largeModalLabel"><img src="assets/img/{{Id}}.png"
+          style="height: 50px; width:50px;"> Word Cloud Of {{Country}}</h3>
+    </div>
+    <div class="modal-body">
+      <h1 class="text-center">
+        <div AgWordCloud [wordData]="wordData" [options]="options" style="width:100%; height:100%"></div>
+
+      </h1>
+    </div>
+
+    <div class="modal-footer">
+      <button type="button" class="btn action-btn btn-warning waves-effect waves-light" (click)="close()"
+        data-dismiss="modal">Cancel</button>
+    </div>
+  </div>
+</ng-template>
