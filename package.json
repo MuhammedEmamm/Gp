@@ -36,7 +36,7 @@
     "ngx-tweet": "^2.0.3",
     "p5": "^0.8.0",
     "rxjs": "~6.3.3",
-    "three": "^0.103.0",
+    "three": "^0.137.0",
     "three-orbit-controls": "^82.1.0",
     "three-orbitcontrols-ts": "^0.1.2",
     "three-orthographic-trackball-controls": "^79.0.1",
